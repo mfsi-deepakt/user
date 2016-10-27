@@ -1,0 +1,13 @@
+body {
+	background-color : #59c676;
+	margin: 20px;
+	padding: 20px;
+}
+a {
+	margin: 20px;
+	padding: 20px;
+}
+input {
+	position: absolute;
+	left: 300px;
+}
