@@ -3,22 +3,23 @@ class User
 {
 	private  static $user = [];
     private static $login = '0';
+    public $errors = [];
+
     public function validate()
     {
         if(is_array($this->data)) {
+            $errors = [];
             if (empty($this->data)) {
-                return false;
+                $errors[] = 'message';
             } elseif (!filter_var($this->data['email'], FILTER_VALIDATE_EMAIL)) {
-                return false;
+                $errors['email'] = 'FILTER_VALIDATE_EMAIL';
             } elseif ((!preg_match("/^[a-zA-Z ]*$/", $this->data['fname']) ) && (!preg_match("/^[a-zA-Z ]*$/", $this->data['fname']) ) ) {
                 return false;
             } elseif(empty($this->data['password'])) {
                 return false;
             }
-            else 
-            {
-                return true;
-            }
+            
+            return $errors;
         } 
     }
     private function validateId($id)
@@ -36,7 +37,7 @@ class User
         if ($this->validate()) {
         	$id = count(static::$user) + 1;
         	static::$user[$id] = $this->data;
-        	return $id;
+        	return true;
         } else {
         	return false;
         }

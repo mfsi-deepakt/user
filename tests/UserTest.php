@@ -13,15 +13,45 @@ class UserTest extends TestCase
             'password' => 'password'
         ];
 
-        $this->assertTrue($user->save() != false);
-          $user2 = new User();
-        $user2->data = [
-        'fname' => 'Kapil',
-        'lname' => 'tomar',
-        'email' => 'Sdeepak2610@gmail.com',
-        'password' =>'password'
-         ];
-        $this->assertTrue($user2->save() != false);   
+        $this->assertTrue($user->save());
+    }
+
+    public function testSaveWithNoData()
+    {
+      $user = new User();
+      $user->data = [];
+      $this->assertFalse($user->save());
+    }
+    public function testSaveIncompleteData()
+    {
+      $user = new User();
+      $user->data=[
+      'fname' => 'deepak',
+      'lname' => 'tomar',
+      'password'=>'password'
+      ];
+      $this->assertTrue($user->save());
+    }
+     public function testSaveduplicateEmail()
+    {
+      $user= new User();
+      $user->data =[ 
+      'fname' => 'kapil',
+      'lname' => 'tomar',
+      'email' => 'sdeepak2610@gmail.com',
+      'password' => 'password'];
+      $this->assertTrue($user->save());
+    }
+    public function testSaveInvalidPassword() 
+    {
+      $user = new User();
+      $user->data = [
+      'fname'=>'arun',
+      'lname'=>'kumar',
+      'email'=>'arun.kumar@gmail.com',
+      'password'=>'1'
+      ];
+      $this->assertTrue($user->save());
     }
 
     public function testFindById()
@@ -51,6 +81,23 @@ class UserTest extends TestCase
     $result = User::login($email, $password);
     $this->assertTrue($result);
    }
+   public function testLoginEmptyData()
+   {
+    try {
+      $result = User::login();    
+    }catch(Exception ee)
+    {
+      echo "Error message : ".$e->getMessage();
+    }
+   }
+   public function testLoginInvalidData()
+   {
+    $email = '1';
+    $password = '1';
+    $result = User::login($email, $password);
+    $this->assertTrue($result);
+   }
+   
    public function testlogout()
    {
     $result = User::logout();
